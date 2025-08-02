@@ -61,7 +61,7 @@ jobs:
 
     - name: Tag and upload to docker hub
       run: |
-        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/javaapp
+        IMAGE_NAME=${{ secrets.DOCKERHUB_USER }}/javaapp
         VERSION=${{ steps.versioning.outputs.new_version }}
         docker tag javaapp:$VERSION $IMAGE_NAME:$VERSION
         docker push $IMAGE_NAME:$VERSION
