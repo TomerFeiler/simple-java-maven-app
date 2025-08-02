@@ -61,9 +61,9 @@ jobs:
 
     - name: Tag and upload to docker hub
       run: |
-        IMAGE_NAME=${{ secrets.DOCKERHUB_USER }}/javaapp
+        IMAGE_NAME=${{ secrets.DOCKERHUB_USER }}/simplejavaapp
         VERSION=${{ steps.versioning.outputs.new_version }}
-        docker tag javaapp:$VERSION $IMAGE_NAME:$VERSION
+        docker tag simplejavaapp:$VERSION $IMAGE_NAME:$VERSION
         docker push $IMAGE_NAME:$VERSION
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
