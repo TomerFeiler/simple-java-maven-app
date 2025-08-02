@@ -32,12 +32,12 @@ jobs:
     - name: Bump patch version
       id: versioning
       run: |
-        CURRENT_VERSION=$(mvn help:evaluate -Dexoression=project.version -q -DforceStdout)
-        IFS='.' read -r MAJOR MINOR PATCH <<< "${CURRENT_VERSION%-SNAPSHOT}"
-        PATCH=$((PATCH+1))
-        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-        mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
-        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        mvn build-helper:parse-version versions:set \
+          -DnewVersion=\${parsedVersion.nextIncrementalVersion} \
+          -DgenerateBackupPoms=false
+         NEW_VERSION=$(mvn help:evaluate -Dexpression.project.version -q -DforceStdout | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+         echo "Version bumped to $NEW_VERSION"
+         echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
     - name: Commit new version
       run: |
         git config user.name "github-actions"
