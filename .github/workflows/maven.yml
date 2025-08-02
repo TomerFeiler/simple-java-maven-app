@@ -38,8 +38,18 @@ jobs:
         NEW_VERSION="$MAJOR.$MINOR.$PATCH"
         mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
         echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Commit new version
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add pom.xml
+        git commit -m "Bump version to ${{ steps.versioning.outputs.new_version }}"
+        git push
+        
+    - name: Build docker image
+      run: |
+        docker build \
+          -t SimpleJavaApp:${{ steps.versioning.outputs.new_version }} .
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
