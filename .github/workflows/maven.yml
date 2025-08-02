@@ -35,7 +35,7 @@ jobs:
         mvn build-helper:parse-version versions:set \
           -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}' \
           -DgenerateBackupPoms=false
-         NEW_VERSION=$(xmllint --xpath "string(//project/version)" pom.xml)
+         NEW_VERSION=$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' pom.xml | head -n 1)
          echo "Version bumped to $NEW_VERSION"
          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
          cat $GITHUB_OUTPUT || echo "Output file not found"
