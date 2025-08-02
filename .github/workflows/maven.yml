@@ -67,7 +67,7 @@ jobs:
         docker push $IMAGE_NAME:$VERSION
 
     - name: deployment on EC2
-      uses: applebot/ssh-action@v1.0.3
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2INSTANCE }}
         username: ${{ secrets.EC2USER }}
