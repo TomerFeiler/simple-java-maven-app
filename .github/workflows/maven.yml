@@ -43,13 +43,13 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add pom.xml
-        git commit -m "Bump version to ${{ steps.versioning.outputs.new_version }}"
+        git commit -m "Bump version to ${{ new_version }}"
         git push
         
     - name: Build docker image
       run: |
         docker build \
-          -t SimpleJavaApp:${{ steps.versioning.outputs.new_version }} .
+          -t SimpleJavaApp:${{ new_version }} .
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
